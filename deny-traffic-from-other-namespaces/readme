@@ -6,6 +6,10 @@
 kubectl run test-$RANDOM --namespace=np-prod --rm -i -t --image=alpine -- sh
 >wget -qO- --timeout=2 http://web.default
 
+# Query this web service from the np-prod namespace
+kubectl run test-$RANDOM --namespace=test --rm -i -t --image=alpine -- sh
+>wget -qO- --timeout=2 http://web.default
+
 #Query this web service from the default namespace
 kubectl run test-$RANDOM --namespace=default --rm -i -t --image=alpine -- sh
 >wget -qO- --timeout=2 http://web.default
