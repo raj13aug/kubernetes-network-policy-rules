@@ -1,0 +1,15 @@
+
+ #Start a web service in namespace default
+ kubectl run web --namespace=default --image=nginx --labels="app=web" --expose --port=80
+
+# Query this web service from the test namespace
+kubectl run test-$RANDOM --namespace=test --rm -i -t --image=alpine -- sh
+>wget -qO- --timeout=2 http://web.default
+
+# Query this web server from prod namespace, without labelling the application 
+kubectl run test-$RANDOM --namespace=prod --rm -i -t --image=alpine -- sh
+>wget -qO- --timeout=2 http://web.default
+
+#Query this web service from the prod namespace
+kubectl run test-$RANDOM --namespace=prod --labels="type=monitoring" --rm -i -t --image=alpine -- sh
+>wget -qO- --timeout=2 http://web.default
